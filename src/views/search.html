@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Search Results</title>
+    <style>
+        .author {
+            text-align: center;
+            margin: 20px;
+        }
+        .author__heading {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .articles__heading {
+            font-size: 20px;
+            margin: 0;
+        }
+        .search-container {
+            margin-left: 20px;
+        }
+        .search-container input {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .article-ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .article-ul li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .article-ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+        .article-ul li a:hover {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="author">
+    <h2 class="author__heading">Search Results</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 class="articles__heading">Posts</h2>
+        <div class="search-container">
+            <form action="/search">
+                <img src="img/search-fn.png" class="search-icon" alt="">
+                <input name="searchTerm" type="text" placeholder="Search">
+            </form>
+        </div>
+    </div>
+</div>
+
+<section class="articles">
+    <ul class="article-ul">
+        <li>
+            <a href="/post/1">
+                <span>Title of Post 1</span>
+                <span class="article-list__date">October 1, 2023</span>
+            </a>
+        </li>
+        <li>
+            <a href="/post/2">
+                <span>Title of Post 2</span>
+                <span class="article-list__date">October 5, 2023</span>
+            </a>
+        </li>
+        <li>
+            <a href="/post/3">
+                <span>Title of Post 3</span>
+                <span class="article-list__date">October 10, 2023</span>
+            </a>
+        </li>
+    </ul>
+</section>
+
+</body>
+</html>
