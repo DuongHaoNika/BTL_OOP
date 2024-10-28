@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Post</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Liên kết đến file CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .admin-title {
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        .post-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        label {
+            margin-top: 10px;
+            display: block;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical; /* Cho phép kéo chiều cao, không cho chiều rộng */
+            box-sizing: border-box; /* Đảm bảo padding không làm chiều rộng tăng lên */
+        }
+        input[type="submit"] {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            width: 100%; /* Đảm bảo nút submit chiếm toàn bộ chiều rộng */
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .post-form {
+                padding: 15px;
+            }
+            input[type="text"], textarea {
+                font-size: 14px; /* Giảm kích thước chữ cho màn hình nhỏ */
+            }
+            input[type="submit"] {
+                font-size: 14px; /* Giảm kích thước chữ cho nút submit */
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/admin">&larr; Back</a>
+    
+    <div class="admin-title">
+        <h2>Add New Post</h2>
+    </div>
+
+    <form action="/admin/add-post" enctype="multipart/form-data" method="POST" class="post-form">
+        <label for="title"><b>Title</b></label>
+        <input type="text" placeholder="Post Title" name="title" required>
+
+        <label for="body"><b>Content</b></label>
+        <textarea name="body" cols="50" rows="10" required placeholder="Write your content here..."></textarea>
+
+        <input type="submit" value="Add" class="btn">
+    </form>
+</body>
+</html>

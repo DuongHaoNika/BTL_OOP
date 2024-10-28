@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="../../img/title-icon.png" type="image/x-icon" />
+    <script type="text/javascript" defer src="/js/script.js"></script>
+    <title>Your Page Title</title> <!-- Thay thế <%= title %> bằng tiêu đề cụ thể -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .main {
+            padding: 20px;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 0 0 8px 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Admin Header</h1>
+        <nav>
+            <a href="/admin/dashboard" style="color: white; margin: 0 15px;">Dashboard</a>
+            <a href="/admin/posts" style="color: white; margin: 0 15px;">Posts</a>
+            <a href="/admin/settings" style="color: white; margin: 0 15px;">Settings</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <main class="main">
+            <h2>Welcome to the Admin Page</h2>
+            <p>This is where the main content goes. You can manage your posts, settings, and more from this dashboard.</p>
+            <!-- Thêm nội dung chính của bạn ở đây -->
+        </main>
+        
+        <footer>
+            <p>&copy; 2024 Your Website</p>
+        </footer>
+    </div>
+</body>
+</html>
