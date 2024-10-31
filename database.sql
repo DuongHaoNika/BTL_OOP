@@ -21,6 +21,17 @@ CREATE TABLE role
     role VARCHAR(10) NOT NULL
 );
 
+CREATE TABLE posts
+(
+    id INTEGER PRIMARY KEY,
+    title VARCHAR(255),
+    body TEXT,
+    active BOOLEAN,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+
 CREATE TABLE image
 (
     id INT PRIMARY KEY,
