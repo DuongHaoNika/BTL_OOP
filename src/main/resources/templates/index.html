@@ -1,113 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Posts</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .articles {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin: 20px 0;
-        }
-        .articles__heading {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        .search-container {
-            display: flex;
-            align-items: center;
-        }
-        .search-container input[type="text"] {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-left: 10px;
-            width: 200px;
-        }
-        .article-ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .article-ul li {
-            margin: 10px 0;
-        }
-        .article-ul a {
-            text-decoration: none;
-            color: #007bff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .article-ul a:hover {
-            background-color: #f0f0f0;
-        }
-        .article-list__date {
-            color: #999;
-            font-size: 14px;
-        }
-        .pagination {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .pagination:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="/style.css">
+    <link
+            rel="icon"
+            href="/img/title-icon.png"
+            type="image/x-icon"
+    />
+    <!--    <script type="text/javascript" defer src="/js/script.js"></script>-->
+    <title th:text="${title}">Nika | Post</title>
 </head>
 <body>
-    <section class="articles">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 class="articles__heading">Posts</h2>
-            <div class="search-container">
-                <form action="/search">
-                    <img src="img/search-fn.png" class="search-icon" alt="Search Icon" style="height: 20px;">
-                    <input name="searchTerm" type="text" placeholder="Search">
-                </form>
+    <div th:replace="fragments/header :: header">&nbsp;</div>
+    <div class="container">
+        <section class="articles">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 class="articles__heading">Posts</h2>
+                <div class="search-container">
+                    <form action="/search">
+                        <img src="img/search-fn.png" class="search-icon" alt="Search Icon" style="height: 20px;">
+                        <input name="searchTerm" type="text" placeholder="Search">
+                    </form>
+                </div>
             </div>
-        </div>
-        <ul class="article-ul">
-            <li>
-                <a href="/post/1">
-                    <span>Title of Post 1</span>
-                    <span class="article-list__date">October 1, 2023</span>
-                </a>
-            </li>
-            <li>
-                <a href="/post/2">
-                    <span>Title of Post 2</span>
-                    <span class="article-list__date">October 5, 2023</span>
-                </a>
-            </li>
-            <li>
-                <a href="/post/3">
-                    <span>Title of Post 3</span>
-                    <span class="article-list__date">October 10, 2023</span>
-                </a>
-            </li>
-        </ul>
+            <div th:if="${posts != null}">
+                <ul class="article-ul" th:each="post : ${posts}">
+                    <li>
+                        <a th:href="@{/post/{id}(id=${post.id})}">
+                            <span th:text="${post.title}">Title of Post 1</span>
+                            <span th:text="${post.updatedAt}" class="article-list__date">October 1, 2023</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-        <a href="/?page=1" class="pagination">&lt; View Older Posts </a>
-        <a style="float:right" href="/?page=3" class="pagination">View Newer Posts &gt;</a>
-    </section>
+            <a href="/?page=1" class="pagination">&lt; View Older Posts </a>
+            <a style="float:right" href="/?page=3" class="pagination">View Newer Posts &gt;</a>
+        </section>
+        <div th:replace="fragments/footer :: footer">&nbsp;</div>
+    </div>
 </body>
 </html>

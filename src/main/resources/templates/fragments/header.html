@@ -1,0 +1,37 @@
+<html>
+    <header class="header" th:fragment="header">
+        <a href="/" class="header__logo">D22 ATTT</a>
+
+        <nav class="header__nav">
+            <ul>
+                <li>
+                    <a href="/" class="active">Home</a>
+                </li>
+                <li>
+                    <a href="/about" class="">About</a>
+                </li>
+                <li>
+                    <a href="/contact" class="">Contact</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="header__button">
+            <div class="dropdown" aria-expanded="false">
+                <a>DuongHaoNika
+                    <img src="/img/down.png" alt="">
+                </a>
+                <div class="dropdown-content">
+                    <a href="#">Profile</a>
+                    <a href="/logout">Logout</a>
+                </div>
+            </div>
+            <!-- Nếu người dùng không đăng nhập -->
+            <!-- <a href="/auth?next=currentRoute" class="searchBtn" aria-expanded="false">
+                Login
+                <img src="/img/login.svg" alt="">
+            </a> -->
+        </div>
+    </header>
+</html>
+
