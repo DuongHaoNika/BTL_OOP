@@ -1,50 +1,22 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>About Author</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .about-page {
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin: 20px 0;
-        }
-        .about-page img {
-            width: 30%;
-            height: auto;
-            border-radius: 20px;
-            margin-right: 20px;
-        }
-        .about-info {
-            flex: 1;
-        }
-        .about-info p {
-            margin: 5px 0;
-            font-size: 18px;
-            color: #333;
-        }
-        .author__heading {
-            font-size: 24px;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="/style.css">
+    <link
+            rel="icon"
+            href="/img/title-icon.png"
+            type="image/x-icon"
+    />
+    <!--    <script type="text/javascript" defer src="/js/script.js"></script>-->
+    <title th:text="${title}">Nika | Post</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
     <div class="about-page">
-        <img src="/img/luffy-login.png" alt="Author's Image">
+        <img style="width: 30%; height: 30%; border-radius: 20px;" src="/img/luffy-login.png" alt="">
         <div class="about-info">
             <h1 class="author__heading">Duong Quang Hao</h1>
             <p>D22CQAT02-B</p>
@@ -52,5 +24,7 @@
             <p>Posts and Telecommunications Institute of Technology</p>
         </div>
     </div>
+    <div th:replace="fragments/footer :: footer">&nbsp;</div>
+</div>
 </body>
 </html>
