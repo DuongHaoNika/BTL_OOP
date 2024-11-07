@@ -11,4 +11,6 @@ public interface IUserService
     List<User> getAllUsers(); // Lấy danh sách tất cả người dùng
     User updateUser(Long id, User userDetails); // Cập nhật thông tin người dùng
     void deleteUser(Long id); // Xóa người dùng theo ID
+
+    User login(User user);
 }

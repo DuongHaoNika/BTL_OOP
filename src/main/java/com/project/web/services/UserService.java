@@ -51,4 +51,10 @@ public class UserService implements IUserService
         userRepository.deleteById(id);
     }
 
+    @Override
+    public User login(User user)
+    {
+        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+    }
+
 }
