@@ -2,6 +2,7 @@ package com.project.web.services;
 
 import com.project.web.dtos.PostDTO;
 import com.project.web.exceptions.DataNotFoundException;
+import com.project.web.models.Image;
 import com.project.web.models.Post;
 import com.project.web.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -57,5 +58,8 @@ public class PostService implements IPostService {
         else {
             throw new DataNotFoundException("Post is not found with id: " + id);
         }
+
     }
+
+
 }

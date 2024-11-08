@@ -5,14 +5,13 @@ import com.project.web.models.Post;
 import com.project.web.services.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@Controller // @RestController
 @RequestMapping("/")
 @RequiredArgsConstructor
 public class PostController {
@@ -21,7 +20,6 @@ public class PostController {
     @GetMapping("")
     public String getAllPost(Model model) {
         List<Post> posts = postService.findAll();
-        System.out.println(posts);
         model.addAttribute("posts", posts);
 //        model.addAttribute("post", new Post());
         model.addAttribute("title", "Nika | Posts");
