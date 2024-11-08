@@ -4,87 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/style.css">
     <title>Register</title>
-    <style>
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 50px auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            background-color: #f9f9f9;
-        }
-        .login-form h3 {
-            margin-bottom: 20px;
-        }
-        .admin-form {
-            width: 100%;
-        }
-        .admin-form label {
-            margin-top: 10px;
-            display: block;
-        }
-        .admin-form input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .admin-form-btn {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-        .admin-form-btn:hover {
-            background-color: #0056b3;
-        }
-        .error-message {
-            color: red;
-            margin-top: 10px;
-        }
-        .avatar-img {
-            width: 40%;
-            height: auto;
-            border-radius: 20px;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
 
-<div class="login-form">
-    <div>
-        <h3>Register</h3>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <div class="login-form">
+        <div>
+            <h3>Register</h3>
 
-        <p>You already have an account? Please <a href="/auth">Login</a></p>
+            <p>You already have an account? Please <a href="/auth/login">Login</a></p>
 
-        <form action="/auth/register" method="post" class="admin-form">
-            <label for="username"><b>Username</b></label>
-            <input type="text" placeholder="username" name="username" required>
+            <form th:object="${userDTO}" action="/auth/register" method="post" class="admin-form">
+                <label for="username"><b>Username</b></label>
+                <input th:field="*{username}" type="text" placeholder="username" name="username" required>
 
-            <label for="password"><b>Password</b></label>
-            <input type="password" placeholder="password" name="password" required>
+                <label for="password"><b>Password</b></label>
+                <input th:field="*{password}" type="password" placeholder="password" name="password" required>
 
-            <label for="cpassword"><b>Retype Password</b></label>
-            <input type="password" placeholder="retype password" name="cpassword" required>
+                <label for="fullname"><b>Fullname</b></label>
+                <input th:field="*{fullname}" type="text" placeholder="fullname" name="fullname" required>
 
-            <p class="error-message">Error message if any goes here.</p>
+                <label for="age"><b>Age</b></label>
+                <select th:field="*{age}" id="age" name="age" required>
+                    <option value="" disabled selected>Chọn tuổi</option>
+                    <!-- Thymeleaf lặp qua các giá trị từ 1 đến 100 -->
+                    <option th:each="i : ${#numbers.sequence(1, 100)}"
+                            th:value="${i}"
+                            th:text="${i}">
+                    </option>
+                </select>
 
-            <input type="submit" value="Register" class="admin-form-btn">
-        </form>
+                <label for="Sex"><b>Sex</b></label>
+                <select th:field="*{sex}" id="sex" name="sex" required>
+                    <option th:value="0">Male</option>
+                    <option th:value="1">Female</option>
+                </select>
+
+                <label for="hometown"><b>Hometown</b></label>
+                <input th:field="*{hometown}" type="text" placeholder="hometown" name="hometown" required>
+
+                <label for="school"><b>School</b></label>
+                <input th:field="*{school}" type="text" placeholder="school" name="school" required>
+
+                <p class="error-message">Error message if any goes here.</p>
+
+                <input type="submit" value="Register" class="admin-form-btn">
+            </form>
+        </div>
     </div>
-
-    <img class="avatar-img" src="/img/luffy-login.png" alt="">
+    <div th:replace="fragments/footer :: footer">&nbsp;</div>
 </div>
 
 </body>
