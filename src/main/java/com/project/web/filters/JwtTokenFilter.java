@@ -29,8 +29,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             if(isBypassToken(request)) {
-                filterChain.doFilter(request, response);
-                return;
+                if(getCookie(request, "token") == null) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
             }
 //            String token2 = request.getCookies().
 //            final String authHeader = request.getHeader("Authorization");
@@ -55,6 +57,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }
+            request.setAttribute("username", username);
             filterChain.doFilter(request, response);
         }catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
@@ -70,11 +73,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Pair.of("/css/style.css", "GET"),
                 Pair.of("/about", "GET"),
                 Pair.of("/", "GET"),
+                Pair.of("/img", "GET"),
                 Pair.of("/contact", "GET"),
+                Pair.of("/auth/logout", "GET"),
                 Pair.of("/post", "GET")
         );
         for(Pair<String, String> token : bypassTokens){
-            if(request.getServletPath().equals(token.getFirst()) &&
+            if(request.getServletPath().equals("/")) {
+                return true;
+            }
+            if(request.getServletPath().contains(token.getFirst()) &&
                     request.getMethod().equals(token.getSecond())){
                 System.out.println(request.getServletPath());
                 return true;

@@ -28,18 +28,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String handleLogin(@ModelAttribute UserLoginDTO userLoginDTO, Model model, HttpServletResponse response) {
+    public String handleLogin(@ModelAttribute UserLoginDTO userLoginDTO, HttpServletResponse response, Model model) {
         try {
             String token = userService.login(userLoginDTO.getUsername(), userLoginDTO.getPassword());
             Cookie cookie = new Cookie("token", token);
             cookie.setPath("/");
             cookie.setHttpOnly(true);
-            cookie.setMaxAge(24 * 60 * 60);
+            cookie.setMaxAge(2592000);
             response.addCookie(cookie);
             return "check-login";
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
             return "login";
         }
     }
@@ -61,5 +60,14 @@ public class UserController {
             System.out.println(e.getMessage());
         }
         return "index";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("token", "");
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/auth/login";
     }
 }

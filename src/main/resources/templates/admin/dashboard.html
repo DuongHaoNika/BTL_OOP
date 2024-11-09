@@ -1,49 +1,20 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Bài Viết</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link tới file CSS của bạn -->
-   <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .admin-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .button, .btn, .btn-delete {
-            padding: 10px 15px;
-            text-decoration: none;
-            color: white;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-delete {
-            background-color: #dc3545; /* Màu đỏ cho nút xóa */
-        }
-        .admin-posts {
-            list-style: none;
-            padding: 0;
-        }
-        .admin-posts li {
-            padding: 15px;
-            border-bottom: 1px solid #ccc;
-        }
-        .admin-post-controls {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
+    <link
+            rel="icon"
+            href="/img/title-icon.png"
+            type="image/x-icon"
+    />
+    <title th:text="${title}">Nika | Post</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <a href="/admin">&larr; Back</a>
 
     <div class="admin-title">
         <h2>Posts</h2>
@@ -75,6 +46,8 @@
         </li>
         <!-- Thêm nhiều bài viết khác nếu cần -->
     </ul>
-
+    <div th:replace="fragments/footer :: footer">&nbsp;</div>
+</div>
 </body>
 </html>
+

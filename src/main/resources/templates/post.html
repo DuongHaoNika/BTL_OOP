@@ -38,14 +38,18 @@
     </div>
 
     <div class="comment-text">
-        <form action="/comment/post_id" method="post">
-            <p class="user-comment">Current User</p>
+        <form th:action="@{/comment/{id}(id=${post.id})}" method="post">
+            <p th:text="${username}" class="user-comment">Current User</p>
             <textarea name="commentText" placeholder="Comment"></textarea>
             <button type="submit">Send</button>
         </form>
     </div>
 
-    <h3>Login to comment this blog!</h3>
+    <div th:if="${username == null}">
+        <h3>Login to comment this blog!</h3>
+    </div>
+
+
     <div th:replace="fragments/footer :: footer">&nbsp;</div>
 </div>
 </body>

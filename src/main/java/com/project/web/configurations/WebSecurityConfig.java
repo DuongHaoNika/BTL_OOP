@@ -35,6 +35,7 @@ public class WebSecurityConfig {
                             .requestMatchers(
                                     "/auth/login",
                                     "/auth/register",
+                                    "/auth/logout",
                                     "/css/**",
                                     "/js/**",
                                     "/img/**",
@@ -43,9 +44,8 @@ public class WebSecurityConfig {
                                     "/contact",
                                     "/post/**")
                             .permitAll()
-//                            .requestMatchers(HttpMethod.PUT, "/api/v1/orders/**").hasAnyRole("ADMIN")
-                            .requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
-                            .requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ROLE_ADMIN")
                             .anyRequest().authenticated();
                 });
         http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
