@@ -5,6 +5,7 @@ import com.project.web.dtos.UserLoginDTO;
 import com.project.web.models.User;
 import com.project.web.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,8 +25,17 @@ public class UserController {
 
     @PostMapping("/login")
     public String handleLogin(@ModelAttribute UserLoginDTO userLoginDTO, Model model) {
-        model.addAttribute("title", "Nika | Login");
-        return "index";
+        try {
+            String token = userService.login(userLoginDTO.getUsername(), userLoginDTO.getPassword());
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.set("Authorization", "Bearer " + token);
+            model.addAttribute("title", "Nika | Login");
+            return token;
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "login";
+        }
     }
 
     @GetMapping("/register")
@@ -39,7 +49,7 @@ public class UserController {
     public String handleRegister(@ModelAttribute UserDTO userDTO, Model model) {
         model.addAttribute("title", "Nika | Blog");
         try {
-            User user = userService.createUser(userDTO);
+            userService.createUser(userDTO);
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
