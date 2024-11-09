@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenUtil {
     @Value("${jwt.expiration}")
     private int expiration;
@@ -83,7 +85,7 @@ public class JwtTokenUtil {
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
-        String phoneNumber = this.extractUsername(token);
-        return phoneNumber.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        String username = this.extractUsername(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 }

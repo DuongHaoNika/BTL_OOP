@@ -30,7 +30,7 @@ public class UserController {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.set("Authorization", "Bearer " + token);
             model.addAttribute("title", "Nika | Login");
-            return token;
+            return "index";
         }
         catch (Exception e) {
             System.out.println(e.getMessage());

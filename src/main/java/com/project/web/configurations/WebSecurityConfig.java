@@ -31,35 +31,35 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> {
                     request
-                            .requestMatchers("/auth/login", "/auth/register", "/css/**", "/js/**", "/img/**")
-                            .permitAll()  // Allow access to login, register, CSS, JS, and image resources
+                            .requestMatchers(
+                                    "/auth/login",
+                                    "/auth/register",
+                                    "/css/**",
+                                    "/js/**",
+                                    "/img/**",
+                                    "/",
+                                    "/about",
+                                    "/contact",
+                                    "/post/**")
+                            .permitAll()
+//                            .requestMatchers(HttpMethod.PUT, "/api/v1/orders/**").hasAnyRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN")
                             .anyRequest().authenticated();
-//                            .requestMatchers(
-//                                    "/auth/login",
-//                                    "/auth/register",
-//                                    "/**.css",
-//                                    "/img/**"
-//                            )
-//                            .permitAll()
-//                            .
-//                            .anyRequest().permitAll()
-//                            .requestMatchers(HttpMethod.PUT, "/api/v1/orders/**").hasRole("ADMIN")
-//                            .requestMatchers(HttpMethod.GET, "/api/v1/orders/**").hasAnyRole("ADMIN", "USER")
-//                            .anyRequest().authenticated();
                 });
-        http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
-            @Override
-            public void customize(CorsConfigurer<HttpSecurity> httpSecurityCorsConfigurer) {
-                CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(List.of("*"));
-                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-                configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
-                configuration.setExposedHeaders(List.of("x-auth-token"));
-                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-                source.registerCorsConfiguration("/**", configuration);
-                httpSecurityCorsConfigurer.configurationSource(source);
-            }
-        });
+//        http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
+//            @Override
+//            public void customize(CorsConfigurer<HttpSecurity> httpSecurityCorsConfigurer) {
+//                CorsConfiguration configuration = new CorsConfiguration();
+//                configuration.setAllowedOrigins(List.of("*"));
+//                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+//                configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+//                configuration.setExposedHeaders(List.of("x-auth-token"));
+//                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//                source.registerCorsConfiguration("/**", configuration);
+//                httpSecurityCorsConfigurer.configurationSource(source);
+//            }
+//        });
         return http.build();
     }
 }
