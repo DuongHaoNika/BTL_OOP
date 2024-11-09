@@ -3,6 +3,7 @@ package com.project.web.filters;
 import com.project.web.components.JwtTokenUtil;
 import com.project.web.models.User;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.Cookie;
 import org.springframework.data.util.Pair;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,12 +32,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
-            final String authHeader = request.getHeader("Authorization");
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                return;
-            }
-            final String token = authHeader.substring(7);
+//            String token2 = request.getCookies().
+//            final String authHeader = request.getHeader("Authorization");
+//            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+//                return;
+//            }
+//            final String token = authHeader.substring(7);
+            final String token = getCookie(request, "token");
             final String username = jwtTokenUtil.extractUsername(token);
             if (username != null
                     && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -78,5 +81,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
         }
         return false;
+    }
+
+    private String getCookie(HttpServletRequest request, String name) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (name.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }

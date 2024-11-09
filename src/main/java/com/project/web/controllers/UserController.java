@@ -4,12 +4,16 @@ import com.project.web.dtos.UserDTO;
 import com.project.web.dtos.UserLoginDTO;
 import com.project.web.models.User;
 import com.project.web.services.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 @RequestMapping("/auth")
@@ -24,13 +28,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String handleLogin(@ModelAttribute UserLoginDTO userLoginDTO, Model model) {
+    public String handleLogin(@ModelAttribute UserLoginDTO userLoginDTO, Model model, HttpServletResponse response) {
         try {
             String token = userService.login(userLoginDTO.getUsername(), userLoginDTO.getPassword());
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.set("Authorization", "Bearer " + token);
-            model.addAttribute("title", "Nika | Login");
-            return "index";
+            Cookie cookie = new Cookie("token", token);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(24 * 60 * 60);
+            response.addCookie(cookie);
+            return "check-login";
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
