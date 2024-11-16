@@ -26,7 +26,7 @@ public class PostController {
 
     @GetMapping("")
     public String getAllPost(Model model, Principal principal) {
-        List<Post> posts = postService.findAll();
+        List<Post> posts = postService.findAllActive();
         model.addAttribute("posts", posts);
         model.addAttribute("title", "Nika | Posts");
         return "index";

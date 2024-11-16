@@ -34,7 +34,7 @@
     </div>
 
 
-    <div class="comment-text">
+    <div th:if="${username != null}" class="comment-text">
         <form th:action="@{/comment/{id}(id=${post.id})}" method="post">
             <p th:text="${username}" class="user-comment">Current User</p>
             <textarea name="body" placeholder="Comment"></textarea>

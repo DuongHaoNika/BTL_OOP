@@ -22,29 +22,20 @@
     </div>
 
     <ul class="admin-posts">
-        <li>
-            <a href="/post/1">
-                Example Post Title 1 &nearr;
-            </a>
-            <div class="admin-post-controls">
-                <a href="/edit-post/1" class="btn">Edit</a>
-                <form action="/delete-post/1?_method=DELETE" method="POST" style="display:inline;">
-                    <input type="submit" value="Delete" class="btn-delete btn">
-                </form>
-            </div>
-        </li>
-        <li>
-            <a href="/post/2">
-                Example Post Title 2 &nearr;
-            </a>
-            <div class="admin-post-controls">
-                <a href="/edit-post/2" class="btn">Edit</a>
-                <form action="/delete-post/2?_method=DELETE" method="POST" style="display:inline;">
-                    <input type="submit" value="Delete" class="btn-delete btn">
-                </form>
-            </div>
-        </li>
-        <!-- Thêm nhiều bài viết khác nếu cần -->
+        <div th:each="post: ${posts}">
+            <li>
+                <a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">
+                    &nearr;
+                </a>
+                <div class="admin-post-controls">
+                    <a th:href="@{/admin/edit-post/{id}(id=${post.id})}" class="btn">Edit</a>
+                    <form th:action="@{/admin/delete-post/{id}(id=${post.id})}" th:method="DELETE" style="display:inline;">
+                        <input type="submit" value="Delete" class="btn-delete btn">
+                    </form>
+                </div>
+            </li>
+        </div>
+
     </ul>
     <div th:replace="fragments/footer :: footer">&nbsp;</div>
 </div>

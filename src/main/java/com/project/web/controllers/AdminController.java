@@ -10,13 +10,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
     private final PostService postService;
     @GetMapping()
-    public String admin() {
+    public String admin(Model model) {
+        List<Post> posts = postService.findAll();
+        model.addAttribute("posts", posts);
         return "admin/dashboard";
     }
     @GetMapping("/add-post")
@@ -33,6 +37,20 @@ public class AdminController {
         try {
             postService.createPost(postDTO);
             return "admin/dashboard";
+        }
+        catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+    @GetMapping("/edit-post/{id}")
+    public String getEditPost(@PathVariable Long id,
+                           Model model) {
+        try {
+            Post post = postService.findById(id);
+            model.addAttribute("title", "Nika | Post");
+            model.addAttribute("post", post);
+            return "admin/edit_post";
         }
         catch (Exception e) {
             return e.getMessage();

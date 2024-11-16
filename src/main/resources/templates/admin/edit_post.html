@@ -1,68 +1,47 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xem / Chỉnh Sửa Bài Viết</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link tới file CSS của bạn -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .admin-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .btn, .btn-delete {
-            padding: 10px 15px;
-            text-decoration: none;
-            color: white;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-delete {
-            background-color: #dc3545; /* Màu đỏ cho nút xóa */
-        }
-        label {
-            margin-top: 10px;
-            display: block;
-        }
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        textarea {
-            resize: none; /* Không cho phép thay đổi kích thước */
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
+    <link
+            rel="icon"
+            href="/img/title-icon.png"
+            type="image/x-icon"
+    />
+    <!--    <script type="text/javascript" defer src="/js/script.js"></script>-->
+    <title th:text="${title}">Nika | Post</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <a href="/admin">&larr; Back</a>
+    <div class="admin-title">
+        <h2>Xem / Chỉnh Sửa Bài Viết</h2>
 
-<a href="/admin">&larr; Back</a>
-<div class="admin-title">
-    <h2>Xem / Chỉnh Sửa Bài Viết</h2>
+        <form th:action="@{/admin/delete-post/{id}(id=${post.id})}" th:method="DELETE" style="display:inline;">
+            <input type="submit" value="Delete" class="btn-delete btn">
+        </form>
+    </div>
 
-    <form action="/delete-post/12345?_method=DELETE" method="POST" style="display:inline;">
-        <input type="submit" value="Delete" class="btn-delete btn">
+    <form th:action="@{/admin/edit-post/{id}(id=${post.id})}" th:method="PUT">
+
+        <label for="active"><b>Active</b></label>
+        <select name="active" id="active">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+        
+        <label for="title"><b>Title</b></label>
+        <input type="text" placeholder="Post Title" name="title" th:value="${post.title}">
+
+        <label for="body"><b>Content</b></label>
+        <textarea name="body" cols="50" rows="10" th:text="${post.body}"></textarea>
+
+        <input type="submit" value="Update" class="btn">
     </form>
+
+    <div th:replace="fragments/footer :: footer">&nbsp;</div>
 </div>
-
-<form action="/edit-post/12345?_method=PUT" method="POST">
-    <label for="title"><b>Title</b></label>
-    <input type="text" placeholder="Post Title" name="title" value="Tiêu đề Bài Viết">
-
-    <label for="body"><b>Content</b></label>
-    <textarea name="body" cols="50" rows="10">Nội dung bài viết ở đây.</textarea>
-
-    <input type="submit" value="Update" class="btn">
-</form>
-
 </body>
 </html>

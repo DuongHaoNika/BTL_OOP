@@ -46,6 +46,8 @@ public class WebSecurityConfig {
                             .permitAll()
                             .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("ROLE_ADMIN")
                             .requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/admin/**").hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/admin/**").hasAuthority("ROLE_ADMIN")
                             .anyRequest().authenticated();
                 });
         http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {

@@ -16,6 +16,10 @@ import java.util.List;
 public class PostService implements IPostService {
     private final PostRepository postRepository;
     @Override
+    public List<Post> findAllActive() {
+        return postRepository.findByActiveTrue();
+    }
+
     public List<Post> findAll() {
         return postRepository.findAll();
     }
@@ -41,6 +45,7 @@ public class PostService implements IPostService {
         if(post != null) {
             post.setTitle(postDTO.getTitle());
             post.setBody(postDTO.getBody());
+            post.setActive(postDTO.getActive());
             post.setUpdatedAt(LocalDateTime.now());
             return postRepository.save(post);
         }
