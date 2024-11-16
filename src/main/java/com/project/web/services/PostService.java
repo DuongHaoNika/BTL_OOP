@@ -25,7 +25,11 @@ public class PostService implements IPostService {
     }
 
     public Post findById(Long id) {
-        return postRepository.findById(id).orElse(null);
+        Post post = postRepository.findById(id).orElse(null);
+        if(post == null || post.getActive() == false) {
+            return null;
+        }
+        return post;
     }
 
     public Post createPost(PostDTO postDTO) {

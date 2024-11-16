@@ -35,6 +35,9 @@ public class PostController {
     @GetMapping("/post/{id}")
     public String getPostById(@PathVariable Long id, Model model) {
         Post post = postService.findById(id);
+        if (post == null) {
+            return "redirect:/";
+        }
         List<CommentUserResponse> comments = commentService.getCommentByPostId(id);
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
