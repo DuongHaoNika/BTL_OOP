@@ -3,27 +3,33 @@ package com.project.web.services;
 import com.project.web.dtos.CommentDTO;
 import com.project.web.models.Comment;
 import com.project.web.models.Post;
+import com.project.web.models.User;
 import com.project.web.repositories.CommentRepository;
 import com.project.web.repositories.PostRepository;
+import com.project.web.repositories.UserRepository;
+import com.project.web.responses.CommentUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
-    public Comment saveComment(CommentDTO commentDTO, Long postId) {
+    private final UserRepository userRepository;
+    public Comment saveComment(CommentDTO commentDTO, Long postId, String username) {
         Post post = postRepository.findById(postId).orElse(null);
-        if(post != null) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if(post != null && user != null) {
             Comment comment = Comment
                     .builder()
                     .body(commentDTO.getBody())
                     .post(post)
+                    .user(user)
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .build();
@@ -32,8 +38,14 @@ public class CommentService {
         return null;
     }
 
-    public List<Comment> getCommentByPostId(Long postId) {
-        return commentRepository.findByPostId(postId);
+    public List<CommentUserResponse> getCommentByPostId(Long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        List<CommentUserResponse> commentUserResponses = new ArrayList<>();
+        for(Comment comment : comments) {
+            String username = comment.getUser().getUsername();
+            commentUserResponses.add(new CommentUserResponse(comment.getId(), comment.getBody(), username,comment.getUpdatedAt()));
+        }
+        return commentUserResponses;
     }
 
     public Comment updateComment(CommentDTO commentDTO, Long commentId) {

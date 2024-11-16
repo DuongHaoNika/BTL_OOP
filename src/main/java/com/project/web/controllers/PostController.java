@@ -2,9 +2,12 @@ package com.project.web.controllers;
 
 import com.project.web.dtos.CommentDTO;
 import com.project.web.dtos.PostDTO;
+import com.project.web.models.Comment;
 import com.project.web.models.Post;
+import com.project.web.responses.CommentUserResponse;
 import com.project.web.services.CommentService;
 import com.project.web.services.PostService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -32,14 +35,17 @@ public class PostController {
     @GetMapping("/post/{id}")
     public String getPostById(@PathVariable Long id, Model model) {
         Post post = postService.findById(id);
+        List<CommentUserResponse> comments = commentService.getCommentByPostId(id);
         model.addAttribute("post", post);
+        model.addAttribute("comments", comments);
         model.addAttribute("title", "Nika | Post");
         return "post";
     }
 
     @PostMapping("/comment/{id}")
-    public String comment(@PathVariable Long id, @ModelAttribute CommentDTO commentDTO, Model model) {
-        commentService.saveComment(commentDTO, id);
+    public String comment(@PathVariable Long id, @ModelAttribute CommentDTO commentDTO, Model model, HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        commentService.saveComment(commentDTO, id, username);
         return "redirect:/post/" + id;
     }
 

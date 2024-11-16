@@ -59,7 +59,7 @@ public class UserController {
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return "index";
+        return "redirect:/auth/login";
     }
 
     @GetMapping("/logout")
@@ -70,4 +70,6 @@ public class UserController {
         response.addCookie(cookie);
         return "redirect:/auth/login";
     }
+
+
 }

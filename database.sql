@@ -88,6 +88,15 @@ ALTER TABLE users
     ADD CONSTRAINT fk_user_role
         FOREIGN KEY (role_id) REFERENCES role(id);
 
+ALTER TABLE comment ADD COLUMN user_id INTEGER;
+
+ALTER TABLE comment
+    ADD CONSTRAINT fk_user_id
+        FOREIGN KEY (user_id)
+            REFERENCES users(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE;
+
 insert into role values
                      (1, 'USER'),
                      (2, 'ADMIN');

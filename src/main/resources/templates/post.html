@@ -21,26 +21,23 @@
         <p th:text="${post.updatedAt}">October 15, 2023</p>
     </div>
 
-    <div class="comment-div">
-        <div class="comment">
-            <p class="user-comment">User1</p>
-            <p class="comment-content">This is a comment on the post.</p>
+    <div th:if="${comments != null}">
+        <div th:each="comment : ${comments}">
+            <div class="comment-div">
+                <div class="comment">
+                    <p class="user-comment" th:text="${comment.username}">comment.username</p>
+                    <p class="comment-content" th:text="${comment.body}">comment.body</p>
+                </div>
+                <p class="time-comment" th:text="${comment.updatedAt}"></p>
+            </div>
         </div>
-        <p class="time-comment">October 16, 2023</p>
     </div>
 
-    <div class="comment-div">
-        <div class="comment">
-            <p class="user-comment">User2</p>
-            <p class="comment-content">Another insightful comment here!</p>
-        </div>
-        <p class="time-comment">October 17, 2023</p>
-    </div>
 
     <div class="comment-text">
         <form th:action="@{/comment/{id}(id=${post.id})}" method="post">
             <p th:text="${username}" class="user-comment">Current User</p>
-            <textarea name="commentText" placeholder="Comment"></textarea>
+            <textarea name="body" placeholder="Comment"></textarea>
             <button type="submit">Send</button>
         </form>
     </div>
