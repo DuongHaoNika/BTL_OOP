@@ -17,5 +17,7 @@ public class CommentUserResponse {
 
     private String username;
 
+    private String urlImage;
+
     private LocalDateTime updatedAt;
 }

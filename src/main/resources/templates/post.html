@@ -27,6 +27,7 @@
                 <div class="comment">
                     <p class="user-comment" th:text="${comment.username}">comment.username</p>
                     <p class="comment-content" th:text="${comment.body}">comment.body</p>
+                    <img th:if="${comment.urlImage != null}" th:src="${comment.urlImage}" alt="">
                 </div>
                 <p class="time-comment" th:text="${comment.updatedAt}"></p>
             </div>
@@ -35,9 +36,10 @@
 
 
     <div th:if="${username != null}" class="comment-text">
-        <form th:action="@{/comment/{id}(id=${post.id})}" method="post">
+        <form th:action="@{/comment/{id}(id=${post.id})}" method="post" enctype="multipart/form-data">
             <p th:text="${username}" class="user-comment">Current User</p>
             <textarea name="body" placeholder="Comment"></textarea>
+            <input type="file" class="form-control-file" name="uploaded_file">
             <button type="submit">Send</button>
         </form>
     </div>

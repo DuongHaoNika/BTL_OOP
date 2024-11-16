@@ -2,6 +2,7 @@ package com.project.web.controllers;
 
 import com.project.web.dtos.PostDTO;
 import com.project.web.models.Post;
+import com.project.web.services.ImageService;
 import com.project.web.services.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AdminController {
     private final PostService postService;
+    private final ImageService imageService;
     @GetMapping()
     public String admin(Model model) {
         List<Post> posts = postService.findAll();
@@ -111,21 +113,9 @@ public class AdminController {
                 if(contentType == null || !contentType.startsWith("image")){
 //                    return ResponseEntity.badRequest().body("File is not an image!");
                 }
-                String fileName = storeFile(file);
+                imageService.storeFile(file);
             }
         }
         return "redirect:/admin/add-image";
-    }
-
-    private String storeFile(MultipartFile file) throws IOException {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String newFileName = UUID.randomUUID().toString() + "_" + fileName;
-        Path uploadDir = Paths.get("src/main/resources/static/uploads");
-        if(!Files.exists(uploadDir)) {
-            Files.createDirectory(uploadDir);
-        }
-        Path destination = Paths.get(uploadDir.toString(), newFileName);
-        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-        return newFileName;
     }
 }

@@ -1,4 +1,5 @@
 create database blog;
+use blog;
 CREATE TABLE users
 (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -34,18 +35,16 @@ CREATE TABLE image
 (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
-    source TEXT NOT NULL,
+    source VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    user_id INT NOT NULL,
-    post_id INT NOT NULL,
     comment_id INT
 );
 
 CREATE TABLE avatar
 (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    source TEXT NOT NULL,
+    source VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     user_id INT,
@@ -63,10 +62,12 @@ CREATE TABLE comment
     FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
-
 ALTER TABLE image
-    ADD CONSTRAINT fk_image_post
-        FOREIGN KEY (post_id) REFERENCES posts(id);
+    ADD CONSTRAINT fk_image_comment
+        FOREIGN KEY (comment_id)
+            REFERENCES comment(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE;
 
 ALTER TABLE comment
     ADD CONSTRAINT fk_comment_post
@@ -74,14 +75,6 @@ ALTER TABLE comment
 
 ALTER TABLE avatar
     ADD CONSTRAINT fk_avatar_user
-        FOREIGN KEY (user_id) REFERENCES users(id);
-
-ALTER TABLE image
-    ADD CONSTRAINT fk_image_comment
-        FOREIGN KEY (comment_id) REFERENCES comment(id);
-
-ALTER TABLE image
-    ADD CONSTRAINT fk_image_user
         FOREIGN KEY (user_id) REFERENCES users(id);
 
 ALTER TABLE users
