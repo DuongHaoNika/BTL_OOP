@@ -68,4 +68,8 @@ public class UserService {
 
         return jwtTokenUtil.generateToken(user.get());
     }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }
