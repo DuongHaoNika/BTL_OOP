@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
     <header class="header" th:fragment="header">
         <a href="/" class="header__logo">D22 ATTT PTIT</a>
 
@@ -22,7 +22,7 @@
                     <img style="width: 6px; height: 6px" src="/img/down.png" alt="">
                 </a>
                 <div class="dropdown-content">
-                    <a href="#">Profile</a>
+                    <a th:href="@{/profile/{username}(username=${username})}">Profile</a>
                     <a href="/auth/logout">Logout</a>
                 </div>
             </div>
