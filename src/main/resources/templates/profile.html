@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,20 @@
 
 <div th:replace="fragments/header :: header">&nbsp;</div>
 <div class="container">
-  
+  <div>
+
+  </div>
+  <div class="container">
+    <div class="profile-details">
+      <p><strong>Username:</strong> <span th:text="${user.username}">username</span></p>
+      <p><strong>Full Name:</strong> <span th:text="${user.fullname}">Full Name</span></p>
+      <p><strong>Age:</strong> <span th:text="${user.age}">Age</span></p>
+      <p><strong>Hometown:</strong> <span th:text="${user.hometown}">Hometown</span></p>
+      <p><strong>School:</strong> <span th:text="${user.school}">School</span></p>
+      <p><strong>Sex:</strong> <span th:text="${user.sex ? 'Female' : 'Male'}">Sex</span></p>
+      <p><strong>Status:</strong> <span th:text="${user.active ? 'Active' : 'Inactive'}">Status</span></p>
+    </div>
+  </div>
   <div th:replace="fragments/footer :: footer">&nbsp;</div>
 </div>
 
