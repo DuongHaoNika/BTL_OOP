@@ -24,13 +24,16 @@
     <div th:if="${comments != null}">
         <div th:each="comment : ${comments}">
             <div class="comment-div">
+                <div class="comment-avatar">
+                    <img src="https://i2.wp.com/genshinbuilds.aipurrjects.com/genshin/characters/ganyu/image.png?strip=all&quality=100" alt="avatar" class="avatar-img">
+                </div>
                 <div class="comment">
                     <p class="user-comment" th:text="${comment.username}">comment.username</p>
                     <p class="comment-content" th:text="${comment.body}">comment.body</p>
-                    <img th:if="${comment.urlImage != null}" th:src="${comment.urlImage}" alt="">
+                    <img th:if="${comment.urlImage != null}" width="100%" th:src="${comment.urlImage}" alt="">
                 </div>
-                <p class="time-comment" th:text="${comment.updatedAt}"></p>
             </div>
+            <p class="time-comment" th:text="${comment.updatedAt}"></p>
         </div>
     </div>
 

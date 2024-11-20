@@ -21,9 +21,14 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
     @GetMapping("/login")
-    public String getLogin(Model model) {
+    public String getLogin(Model model, HttpServletResponse response) {
         model.addAttribute("title", "Nika | Login");
         model.addAttribute("userLoginDTO", new UserLoginDTO());
+        model.addAttribute("username", null);
+        Cookie cookie = new Cookie("token", "");
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         return "login";
     }
 

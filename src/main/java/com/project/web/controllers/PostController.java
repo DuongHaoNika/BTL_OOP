@@ -54,7 +54,7 @@ public class PostController {
                           @RequestParam("uploaded_file") MultipartFile file, HttpServletRequest request) {
         String username = (String) request.getAttribute("username");
         Comment comment = commentService.saveComment(commentDTO, id, username);
-        if(file != null) {
+        if(file != null && !file.isEmpty()) {
             try {
                 String imageUrl = imageService.createCommentImage(file, comment.getId());
                 model.addAttribute("imageUrl", imageUrl);

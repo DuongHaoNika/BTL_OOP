@@ -24,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtTokenFilter jwtTokenFilter) throws Exception {
         http
@@ -42,7 +41,8 @@ public class WebSecurityConfig {
                                     "/",
                                     "/about",
                                     "/contact",
-                                    "/post/**")
+                                    "/post/**",
+                                    "/uploads/**")
                             .permitAll()
                             .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("ROLE_ADMIN")
                             .requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ROLE_ADMIN")

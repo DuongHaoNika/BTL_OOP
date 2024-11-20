@@ -2,8 +2,10 @@ package com.project.web.controllers;
 
 import com.project.web.dtos.PostDTO;
 import com.project.web.models.Post;
+import com.project.web.models.User;
 import com.project.web.services.ImageService;
 import com.project.web.services.PostService;
+import com.project.web.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,7 @@ import java.util.UUID;
 public class AdminController {
     private final PostService postService;
     private final ImageService imageService;
+    private final UserService userService;
     @GetMapping()
     public String admin(Model model) {
         List<Post> posts = postService.findAll();
@@ -117,5 +120,12 @@ public class AdminController {
             }
         }
         return "redirect:/admin/add-image";
+    }
+
+    @GetMapping("/users")
+    public String getUsers(Model model) {
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
+        return "admin/users";
     }
 }

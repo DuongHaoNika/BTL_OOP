@@ -45,6 +45,9 @@ public class User implements UserDetails {
     private Boolean sex;
 
     @Column(nullable = true)
+    private String avatar;
+
+    @Column(nullable = true)
     private Boolean active;
 
     @Column(name="created_at" ,nullable = false)
