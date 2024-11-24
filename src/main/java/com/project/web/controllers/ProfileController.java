@@ -3,10 +3,14 @@ package com.project.web.controllers;
 import com.project.web.models.User;
 import com.project.web.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Optional;
 
@@ -15,16 +19,17 @@ import java.util.Optional;
 public class ProfileController {
     private final UserService userService;
 
-    @GetMapping("/profile/{username}")
-    public String viewProfile(@PathVariable("username") String username, Model model) {
-        Optional<User> user = userService.findByUsername(username);
+    @GetMapping("/profile")
+    public String viewProfile(@AuthenticationPrincipal User user, Model model) {
+        Optional<User> user_optional = userService.findByUsername(user.getUsername());
 
-        if (user.isPresent()) {
-            model.addAttribute("user", user.get());
+        if (user_optional.isPresent()) {
+            model.addAttribute("user", user_optional.get());
             return "profile";  // Trả về trang profile.html
         } else {
             model.addAttribute("error", "User not found");
             return "error";  // Trả về trang error.html
         }
     }
+
 }
