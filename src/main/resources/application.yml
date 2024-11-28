@@ -34,6 +34,6 @@ aws:
   s3:
     bucket-name: oop-bucket
     region: ap-southeast-2
-    access-key: AKIAR7HWXWFQL2IVU4CJ
-    secret-key: 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
+    access-key:
+    secret-key:
 path-image: https://oop-bucket.s3.ap-southeast-2.amazonaws.com/uploads/
