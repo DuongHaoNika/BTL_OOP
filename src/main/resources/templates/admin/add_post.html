@@ -27,6 +27,8 @@
             <label for="body"><b>Content</b></label>
             <textarea name="body" cols="50" rows="10" required placeholder="Write your content here..."></textarea>
 
+            <input type="file" class="form-control-file" name="uploaded_files" multiple>
+
             <input type="submit" value="Add" class="btn">
         </form>
         <div th:replace="fragments/footer :: footer">&nbsp;</div>

@@ -6,6 +6,8 @@ import com.project.web.models.Image;
 import com.project.web.models.Post;
 import com.project.web.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,20 +18,24 @@ import java.util.List;
 public class PostService implements IPostService {
     private final PostRepository postRepository;
     @Override
-    public List<Post> findAllActive() {
-        return postRepository.findByActiveTrue();
+    public Page<Post> findAllActive(PageRequest pageRequest) {
+        return postRepository.findByActiveTrue(pageRequest);
     }
 
-    public List<Post> findAll() {
-        return postRepository.findAll();
+    public Page<Post> findAll(PageRequest pageRequest) {
+        return postRepository.findAll(pageRequest);
     }
 
     public Post findById(Long id) {
         Post post = postRepository.findById(id).orElse(null);
-        if(post == null || post.getActive() == false) {
+        if(post == null || !post.getActive()) {
             return null;
         }
         return post;
+    }
+
+    public Post findByIdAdmin(Long id) {
+        return postRepository.findById(id).orElse(null);
     }
 
     public Post createPost(PostDTO postDTO) {
@@ -61,14 +67,10 @@ public class PostService implements IPostService {
     public void deletePost(Long id) throws DataNotFoundException {
         Post post = postRepository.findById(id).orElse(null);
         if(post != null) {
-            post.setActive(false);
-            postRepository.save(post);
+            postRepository.delete(post);
         }
         else {
             throw new DataNotFoundException("Post is not found with id: " + id);
         }
-
     }
-
-
 }

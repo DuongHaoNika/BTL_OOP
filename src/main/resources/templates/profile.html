@@ -22,7 +22,7 @@
       <p><strong>Sex:</strong> <span th:text="${user.sex ? 'Female' : 'Male'}" >Sex</span></p>
     </div>
     <div class="profile-image">
-      <img src="https://cloudcdnvod.tek4tv.vn/Mam/attach/upload/01122022004832/004834_52479783522_5919c73401_k166971614833.jpg" alt="Profile Image">
+      <img th:src="${user.avatar}" alt="Profile Image">
     </div>
   </div>
     <form th:action="@{/profile/edit}" method="get">

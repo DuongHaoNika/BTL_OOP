@@ -32,4 +32,17 @@ public class ProfileController {
         }
     }
 
+    @GetMapping("/profile/{username}")
+    public String viewProfile(@PathVariable String username, Model model) {
+
+        Optional<User> user_optional = userService.findByUsername(username);
+
+        if (user_optional.isPresent()) {
+            model.addAttribute("user", user_optional.get());
+            return "profile";
+        } else {
+            model.addAttribute("error", "User not found");
+            return "error/error";
+        }
+    }
 }

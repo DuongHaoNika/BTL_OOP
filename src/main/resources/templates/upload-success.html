@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Upload Successful</title>
 </head>
 <body>
-$END$
+<p>Upload successful! Redirecting to profile...</p>
+<script>
+  setTimeout(function() {
+    window.location.href = "/profile/edit";
+  }, 5000); // Chờ 2 giây trước khi chuyển hướng
+</script>
 </body>
 </html>

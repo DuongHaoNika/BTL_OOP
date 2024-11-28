@@ -18,9 +18,6 @@ public class Image {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
     private String source;
 
     @ManyToOne

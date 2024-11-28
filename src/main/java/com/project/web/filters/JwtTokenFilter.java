@@ -53,7 +53,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             request.setAttribute("username", username);
             filterChain.doFilter(request, response);
         }catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Hello");
         }
     }
 
@@ -69,7 +69,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Pair.of("/img", "GET"),
                 Pair.of("/contact", "GET"),
                 Pair.of("/auth/logout", "GET"),
-                Pair.of("/post", "GET")
+                Pair.of("/post", "GET"),
+                Pair.of("/uploads", "GET")
         );
         for(Pair<String, String> token : bypassTokens){
             if(request.getServletPath().equals("/")) {

@@ -41,9 +41,11 @@ public class UserController {
             cookie.setHttpOnly(true);
             cookie.setMaxAge(2592000);
             response.addCookie(cookie);
-            return "check-login";
+            return "redirect:/";
         }
         catch (Exception e) {
+            model.addAttribute("title", "Nika | Login");
+            model.addAttribute("error", e.getMessage());
             return "login";
         }
     }
@@ -57,12 +59,13 @@ public class UserController {
 
     @PostMapping("/register")
     public String handleRegister(@ModelAttribute UserDTO userDTO, Model model) {
-        model.addAttribute("title", "Nika | Blog");
         try {
             userService.createUser(userDTO);
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+            model.addAttribute("title", "Nika | Register");
+            model.addAttribute("error", e.getMessage());
+            return "register";
         }
         return "redirect:/auth/login";
     }

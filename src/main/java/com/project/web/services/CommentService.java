@@ -45,13 +45,13 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByPostId(postId);
         List<CommentUserResponse> commentUserResponses = new ArrayList<>();
         for(Comment comment : comments) {
-            String username = comment.getUser().getUsername();
+            User user = comment.getUser();
             Image image = imageRepository.findByCommentId(comment.getId());
             String urlImage = null;
             if(image != null) {
                 urlImage = image.getSource();
             }
-            commentUserResponses.add(new CommentUserResponse(comment.getId(), comment.getBody(), username, urlImage,comment.getUpdatedAt()));
+            commentUserResponses.add(new CommentUserResponse(comment.getId(), comment.getBody(), user.getUsername(), user.getFullname(), user.getAvatar(), urlImage,comment.getUpdatedAt()));
         }
         return commentUserResponses;
     }

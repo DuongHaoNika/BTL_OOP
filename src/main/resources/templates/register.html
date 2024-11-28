@@ -49,7 +49,7 @@
                 <label for="school"><b>School</b></label>
                 <input th:field="*{school}" type="text" placeholder="school" name="school" required>
 
-                <p class="error-message">Error message if any goes here.</p>
+                <p style="color: red" th:if="${error != null}" class="error" th:text="${error}"></p>
 
                 <input type="submit" value="Register" class="admin-form-btn">
             </form>

@@ -17,7 +17,7 @@
 <div class="container">
     <div class="post-content">
         <h2 th:text="${post.title}">Title of the Post</h2>
-        <p th:text="${post.body}">This is the body of the post, where the content goes. It can be multiple paragraphs of text.</p>
+        <p th:utext="${post.body}">This is the body of the post, where the content goes. It can be multiple paragraphs of text.</p>
         <p th:text="${post.updatedAt}">October 15, 2023</p>
     </div>
 
@@ -25,10 +25,10 @@
         <div th:each="comment : ${comments}">
             <div class="comment-div">
                 <div class="comment-avatar">
-                    <img src="https://i2.wp.com/genshinbuilds.aipurrjects.com/genshin/characters/ganyu/image.png?strip=all&quality=100" alt="avatar" class="avatar-img">
+                    <img th:src="${comment.userImage}" alt="avatar" class="avatar-img">
                 </div>
                 <div class="comment">
-                    <p class="user-comment" th:text="${comment.username}">comment.username</p>
+                    <a th:href="@{/profile/{username}(username = ${comment.username})}" class="user-comment" th:text="${comment.fullname}"></a>
                     <p class="comment-content" th:text="${comment.body}">comment.body</p>
                     <img th:if="${comment.urlImage != null}" width="100%" th:src="${comment.urlImage}" alt="">
                 </div>

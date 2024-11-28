@@ -23,10 +23,11 @@
 
     <ul class="admin-posts">
         <div th:each="post: ${posts}">
-            <li>
-                <a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">
+            <li class="post-list">
+                <a style="width: 25%" th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">
                     &nearr;
                 </a>
+                <p th:text="${post.active}"></p>
                 <div class="admin-post-controls">
                     <a th:href="@{/admin/edit-post/{id}(id=${post.id})}" class="btn">Edit</a>
                     <form th:action="@{/admin/delete-post/{id}(id=${post.id})}" th:method="DELETE" style="display:inline;">
@@ -35,10 +36,32 @@
                 </div>
             </li>
         </div>
-
     </ul>
+    <a th:if="${previousPage == true}" class="pagination" id="older-posts">&lt; View Older Posts </a>
+    <a th:if="${nextPage == true}" style="float:right" class="pagination" id="newer-posts">View Newer Posts &gt;</a>
     <div th:replace="fragments/footer :: footer">&nbsp;</div>
 </div>
 </body>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentPage = parseInt(urlParams.get('page')) || 1;
+
+    const previousPage = currentPage + 1
+    const nextPage = currentPage - 1;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const olderPostsLink = document.getElementById('older-posts');
+        const newerPostsLink = document.getElementById('newer-posts');
+
+        if (olderPostsLink) {
+            olderPostsLink.href = `/admin?page=${previousPage}`;
+        }
+
+        if (newerPostsLink) {
+            newerPostsLink.href = `/admin?page=${nextPage}`;
+        }
+    });
+
+</script>
 </html>
 

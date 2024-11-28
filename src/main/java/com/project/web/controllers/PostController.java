@@ -6,12 +6,12 @@ import com.project.web.models.Comment;
 import com.project.web.models.Image;
 import com.project.web.models.Post;
 import com.project.web.responses.CommentUserResponse;
-import com.project.web.services.CommentService;
-import com.project.web.services.ImageService;
-import com.project.web.services.PostService;
+import com.project.web.services.*;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +26,22 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
     private final CommentService commentService;
+    private final S3Service s3Service;
+    private final HTMLService htmlService;
     private final ImageService imageService;
 
     @GetMapping("")
-    public String getAllPost(Model model, Principal principal) {
-        List<Post> posts = postService.findAllActive();
+    public String getAllPost(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by("createdAt").descending());
+        Page<Post> postsPage = postService.findAllActive(pageRequest);
+        int totalPages = postsPage.getTotalPages();
+        boolean nextPage = page >= 2;
+        boolean previousPage = totalPages > page;
+        List<Post> posts = postsPage.getContent();
         model.addAttribute("posts", posts);
         model.addAttribute("title", "Nika | Posts");
+        model.addAttribute("nextPage", nextPage);
+        model.addAttribute("previousPage", previousPage);
         return "index";
     }
 
@@ -43,6 +52,7 @@ public class PostController {
             return "redirect:/";
         }
         List<CommentUserResponse> comments = commentService.getCommentByPostId(id);
+        post.setBody(htmlService.mdToHtml(post.getBody()));
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
         model.addAttribute("title", "Nika | Post");
@@ -56,7 +66,8 @@ public class PostController {
         Comment comment = commentService.saveComment(commentDTO, id, username);
         if(file != null && !file.isEmpty()) {
             try {
-                String imageUrl = imageService.createCommentImage(file, comment.getId());
+                String imageUrl = s3Service.uploadFile(file);
+                imageService.save(comment.getId(), imageUrl);
                 model.addAttribute("imageUrl", imageUrl);
             }
             catch (Exception e) {

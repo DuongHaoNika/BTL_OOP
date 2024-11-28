@@ -17,6 +17,10 @@ public class CommentUserResponse {
 
     private String username;
 
+    private String fullname;
+
+    private String userImage;
+
     private String urlImage;
 
     private LocalDateTime updatedAt;

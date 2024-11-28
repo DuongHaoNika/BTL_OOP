@@ -22,11 +22,8 @@
                     <label for="password"><b>Password</b></label>
                     <input th:field="*{password}" type="password" placeholder="password" required>
 
-                    <!-- Hiển thị thông báo lỗi nếu có -->
-                    <p class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Invalid username</p>
-                    <p class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid password</p>
 
-                    <p class="error">Invalid username or password.</p>
+                    <p style="color: red" th:if="${error != null}" class="error" th:text="error"></p>
 
                     <input type="submit" value="Login" class="admin-form-btn">
                 </form>

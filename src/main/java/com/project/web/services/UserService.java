@@ -49,6 +49,7 @@ public class UserService {
                     .school(userDTO.getSchool())
                     .sex(userDTO.getSex())
                     .role(role)
+                    .avatar("https://static.vecteezy.com/system/resources/previews/005/129/844/non_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg")
                     .active(true)
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
@@ -77,6 +78,8 @@ public class UserService {
     public User save(User user) {
         return userRepository.save(user);
     }
+
+
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);

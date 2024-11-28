@@ -42,7 +42,8 @@ public class WebSecurityConfig {
                                     "/about",
                                     "/contact",
                                     "/post/**",
-                                    "/uploads/**")
+                                    "/uploads/**",
+                                    "/error")
                             .permitAll()
                             .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("ROLE_ADMIN")
                             .requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ROLE_ADMIN")

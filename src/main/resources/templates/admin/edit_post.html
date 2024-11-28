@@ -28,8 +28,14 @@
 
         <label for="active"><b>Active</b></label>
         <select name="active" id="active">
-            <option value="true">True</option>
-            <option value="false">False</option>
+            <div th:if="${post.active == true}">
+                <option selected value="true">True</option>
+                <option value="false">False</option>
+            </div>
+            <div th:if="${post.active == false}">
+                <option value="true">True</option>
+                <option selected value="false">False</option>
+            </div>
         </select>
         
         <label for="title"><b>Title</b></label>
