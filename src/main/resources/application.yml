@@ -30,10 +30,5 @@ spring:
 jwt:
   expiration: 2592000
   secretKey: "Kwcf1S712QB09llAqg7gcqLCD2i5UQWz5gyzg3jLcUQ="
-aws:
-  s3:
-    bucket-name: oop-bucket
-    region: ap-southeast-2
-    access-key:
-    secret-key:
+
 path-image: https://oop-bucket.s3.ap-southeast-2.amazonaws.com/uploads/
