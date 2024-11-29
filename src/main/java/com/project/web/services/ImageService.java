@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ImageService {
+public class ImageService implements IImageService {
     private final ImageRepository imageRepository;
     private final CommentRepository commentRepository;
     public Optional<Image> getImage(Long id) {

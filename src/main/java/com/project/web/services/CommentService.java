@@ -16,14 +16,20 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class CommentService implements ICommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
+
+    public Optional<Comment> getComment(Long id) {
+        return commentRepository.findById(id);
+    }
+
     public Comment saveComment(CommentDTO commentDTO, Long postId, String username) {
         Post post = postRepository.findById(postId).orElse(null);
         User user = userRepository.findByUsername(username).orElse(null);
@@ -56,11 +62,11 @@ public class CommentService {
         return commentUserResponses;
     }
 
-    public Comment updateComment(CommentDTO commentDTO, Long commentId) {
+    public Comment updateComment(String body, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElse(null);
         if(comment != null) {
             comment.setUpdatedAt(LocalDateTime.now());
-            comment.setBody(commentDTO.getBody());
+            comment.setBody(body);
             return commentRepository.save(comment);
         }
         return null;

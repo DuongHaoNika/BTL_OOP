@@ -41,15 +41,6 @@ CREATE TABLE image
     comment_id INT
 );
 
-CREATE TABLE image_blog
-(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(255) NOT NULL,
-    source TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
 CREATE TABLE comment
 (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -58,32 +49,29 @@ CREATE TABLE comment
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     post_id INT NOT NULL ,
     user_id INT NOT NULL,
-    FOREIGN KEY (post_id) REFERENCES posts(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 
 ALTER TABLE comment
     ADD CONSTRAINT fk_comment_post
-        FOREIGN KEY (post_id) REFERENCES posts(id);
+        FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE;
 
 ALTER TABLE image
     ADD CONSTRAINT fk_image_comment
-        FOREIGN KEY (comment_id) REFERENCES comment(id);
+        FOREIGN KEY (comment_id) REFERENCES comment(id) ON DELETE CASCADE;
 
 ALTER TABLE users
     ADD CONSTRAINT fk_user_role
-        FOREIGN KEY (role_id) REFERENCES role(id);
+        FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE;
 
 insert into role values
                      (1, 'USER'),
                      (2, 'ADMIN');
 
-insert into users (id, username, password, fullname, role_id, active) values
-                                                                          (1, 'duongquanghao', 'password', 'Duong Hao', 2, true),
-                                                                          (2, 'phiconghuan', 'password', 'Huan phi cong', 2, true),
-                                                                          (3, 'lengocduc', 'password', 'Le Duc', 1, true),
-                                                                          (4, 'admin', '$2a$10$udj523nuAF7rgXoNxD9kXeyfwf9BlGAdMdx.2v.6BAIXxkTi3AqgW', 'DH', 2, true);
+insert into users (id, username, password, fullname, age, sex, hometown, school, role_id, active) values
+    (1, 'admin', '$2a$10$oC6zI9tBozgVMzAl.Vtl4u0XB.bgAXH.mqYi.CmLsBh7aagDhPbGW', 'Admin', 20, 0, 'Ha Nam', 'PTIT', 2, true);
 
 insert into posts (id, title, body, active) values
                                                 (1, 'Cuoc thi CTF PTIT 2024', 'body', true),

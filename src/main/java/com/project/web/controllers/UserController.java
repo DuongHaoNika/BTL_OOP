@@ -2,24 +2,19 @@ package com.project.web.controllers;
 
 import com.project.web.dtos.UserDTO;
 import com.project.web.dtos.UserLoginDTO;
-import com.project.web.models.User;
-import com.project.web.services.UserService;
+import com.project.web.services.IUserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @Controller
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
+    private final IUserService userService;
     @GetMapping("/login")
     public String getLogin(Model model, HttpServletResponse response) {
         model.addAttribute("title", "Nika | Login");

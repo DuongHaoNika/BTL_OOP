@@ -1,10 +1,9 @@
 package com.project.web.controllers;
 
 import com.project.web.dtos.CommentDTO;
-import com.project.web.dtos.PostDTO;
 import com.project.web.models.Comment;
-import com.project.web.models.Image;
 import com.project.web.models.Post;
+import com.project.web.models.User;
 import com.project.web.responses.CommentUserResponse;
 import com.project.web.services.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,23 +11,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
 public class PostController {
-    private final PostService postService;
-    private final CommentService commentService;
+    private final IPostService postService;
+    private final ICommentService commentService;
     private final S3Service s3Service;
     private final HTMLService htmlService;
-    private final ImageService imageService;
+    private final IImageService imageService;
 
     @GetMapping("")
     public String getAllPost(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
@@ -66,25 +68,73 @@ public class PostController {
         Comment comment = commentService.saveComment(commentDTO, id, username);
         if(file != null && !file.isEmpty()) {
             try {
-                String imageUrl = s3Service.uploadFile(file);
-                imageService.save(comment.getId(), imageUrl);
-                model.addAttribute("imageUrl", imageUrl);
+                String contentType = file.getContentType();
+                assert contentType != null;
+                if(contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/jpg")) {
+                    String imageUrl = s3Service.uploadFile(file);
+                    imageService.save(comment.getId(), imageUrl);
+                    model.addAttribute("imageUrl", imageUrl);
+                }
+                else {
+                    throw new Exception("File is not an image!");
+                }
             }
             catch (Exception e) {
-                return null;
+                return "error/error";
             }
         }
         return "redirect:/post/" + id;
     }
 
-    @PutMapping("/comment/{id}")
-    public String updateComment(@PathVariable Long id, @ModelAttribute CommentDTO commentDTO, Model model) {
-        commentService.updateComment(commentDTO, id);
-        return "redirect:/post/" + id;
+    @GetMapping("/comment/edit/{id}")
+    public String getUpdateComment(@PathVariable Long id, Model model) {
+        Comment comment = commentService.getComment(id).orElse(null);
+        if(comment != null) {
+            model.addAttribute("comment", comment);
+            model.addAttribute("title", "Nika | Post");
+            return "edit-comment";
+        }
+        else {
+            return "error/error";
+        }
     }
 
-    public String deleteComment(@PathVariable Long id, Model model) {
-        commentService.deleteComment(id);
-        return "redirect:/post/" + id;
+    @PutMapping("/comment/edit/{id}")
+    public String updateComment(@PathVariable Long id, @RequestParam String body, Model model) {
+        try {
+            Comment comment = commentService.updateComment(body, id);
+            return "redirect:/post/" + comment.getPost().getId();
+        }
+        catch(Exception e) {
+            return "error/error";
+        }
+    }
+
+    @DeleteMapping("/comment/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> deleteComment(@AuthenticationPrincipal User user, @PathVariable Long id) {
+        String username = user.getUsername();
+        Comment comment = commentService.getComment(id).orElse(null);
+
+        Map<String, String> response = new HashMap<>();
+
+        if (comment != null && comment.getUser().getUsername().equals(username)) {
+            Long postId = comment.getPost().getId();
+            commentService.deleteComment(id);
+
+            response.put("redirectUrl", "/post/" + postId); // Use a clear key for the URL
+            return ResponseEntity.ok(response); // Return JSON
+        } else {
+            response.put("error", "Unauthorized or comment not found");
+            return ResponseEntity.status(403).body(response); // Return error JSON
+        }
+    }
+
+    @GetMapping("/search")
+    public String search(Model model, @RequestParam("keyword") String keyword) {
+        List<Post> posts = postService.searchPosts(keyword);
+        model.addAttribute("posts", posts);
+        model.addAttribute("title", "Nika | Posts");
+        return "index";
     }
 }

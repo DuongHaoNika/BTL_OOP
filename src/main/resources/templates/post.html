@@ -32,6 +32,13 @@
                     <p class="comment-content" th:text="${comment.body}">comment.body</p>
                     <img th:if="${comment.urlImage != null}" width="100%" th:src="${comment.urlImage}" alt="">
                 </div>
+                <div th:if="${username != null && username == comment.username}" class="dropdown" id="dropdown-comment">
+                    <button class="dropdown-toggle" onclick="toggleDropdown(this)">...</button>
+                    <div class="dropdown-menu">
+                        <a style="padding-right: 32px" class="dropdown-item" th:href="@{/comment/edit/{id}(id=${comment.id})}">Edit</a>
+                        <button class="dropdown-item" th:attr="onclick=|deleteComment('${comment.id}')|" >Delete</button>
+                    </div>
+                </div>
             </div>
             <p class="time-comment" th:text="${comment.updatedAt}"></p>
         </div>
@@ -42,7 +49,7 @@
         <form th:action="@{/comment/{id}(id=${post.id})}" method="post" enctype="multipart/form-data">
             <p th:text="${username}" class="user-comment">Current User</p>
             <textarea name="body" placeholder="Comment"></textarea>
-            <input type="file" class="form-control-file" name="uploaded_file">
+            <input accept=".jpg,.jpeg,.png" type="file" class="form-control-file" name="uploaded_file">
             <button type="submit">Send</button>
         </form>
     </div>
@@ -54,6 +61,46 @@
 
     <div th:replace="fragments/footer :: footer">&nbsp;</div>
 </div>
+
+<script>
+    const check = document.getElementById("dropdown-comment");
+    if(check) {
+        function toggleDropdown(button) {
+            const dropdown = button.closest('.dropdown');
+            dropdown.classList.toggle('show');
+            document.querySelectorAll('.dropdown').forEach(d => {
+                if (d !== dropdown) {
+                    d.classList.remove('show');
+                }
+            });
+        }
+
+        function deleteComment(commentId) {
+            if (confirm("Bạn có chắc muốn xóa bình luận này?")) {
+                fetch(`/comment/${commentId}`, { method: 'DELETE' })
+                    .then(response => response.json()) // Parse JSON response
+                    .then(data => {
+                        if (data.redirectUrl) {
+                            window.location.href = data.redirectUrl;
+                        } else if (data.error) {
+                            console.error(data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+
+        document.addEventListener('click', function (event) {
+            const isDropdown = event.target.closest('.dropdown');
+            if (!isDropdown) {
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
+            }
+        });
+    }
+</script>
+
 </body>
 </html>
 

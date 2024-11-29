@@ -3,11 +3,11 @@ package com.project.web.controllers;
 import com.project.web.dtos.PostDTO;
 import com.project.web.models.Post;
 import com.project.web.models.User;
-import com.project.web.services.PostService;
+import com.project.web.services.IPostService;
+import com.project.web.services.IUserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import com.project.web.services.S3Service;
-import com.project.web.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -22,8 +22,8 @@ import java.util.List;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
-    private final PostService postService;
-    private final UserService userService;
+    private final IPostService postService;
+    private final IUserService userService;
     private final S3Service s3Service;
     @GetMapping()
     public String admin(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
@@ -55,6 +55,11 @@ public class AdminController {
             String body = postDTO.getBody();
             for(MultipartFile file : files) {
                 if(file != null && file.getSize() > 0) {
+                    String contentType = file.getContentType();
+                    assert contentType != null;
+                    if(!(contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/jpg"))) {
+                        throw new Exception("File is not an image!");
+                    }
                     String url = "![image](" + s3Service.uploadFile(file) + ")";
                     body = body.replaceFirst("<image>", url);
                 }
@@ -65,7 +70,7 @@ public class AdminController {
             return  "redirect:/admin";
         }
         catch (Exception e) {
-            return e.getMessage();
+            return "error/error";
         }
     }
 
@@ -79,7 +84,7 @@ public class AdminController {
             return "admin/edit_post";
         }
         catch (Exception e) {
-            return e.getMessage();
+            return "error/error";
         }
     }
 
@@ -94,7 +99,7 @@ public class AdminController {
             return "redirect:/admin";
         }
         catch (Exception e) {
-            return e.getMessage();
+            return "error/error";
         }
     }
 
@@ -106,7 +111,7 @@ public class AdminController {
             return "redirect:/admin";
         }
         catch (Exception e) {
-            return e.getMessage();
+            return "error/error";
         }
     }
 

@@ -10,4 +10,5 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByActiveTrue();
     Page<Post> findByActiveTrue(Pageable pageable);
+    List<Post> findByTitleContainingIgnoreCase(String keyword);
 }

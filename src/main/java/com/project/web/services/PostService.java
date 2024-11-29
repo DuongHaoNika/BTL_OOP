@@ -73,4 +73,8 @@ public class PostService implements IPostService {
             throw new DataNotFoundException("Post is not found with id: " + id);
         }
     }
+
+    public List<Post> searchPosts(String keyword) {
+        return postRepository.findByTitleContainingIgnoreCase(keyword);
+    }
 }

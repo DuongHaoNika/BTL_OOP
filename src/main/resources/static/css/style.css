@@ -585,4 +585,43 @@ img {
     align-items: center;
 }
 
+.dropdown {
+    position: relative;
+    display: block;
+}
+
+.dropdown-toggle {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    padding: 5px 0;
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown.show .dropdown-menu {
+    display: block;
+}
 
