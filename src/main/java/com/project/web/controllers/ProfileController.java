@@ -33,13 +33,17 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/{username}")
-    public String viewProfile(@PathVariable String username, Model model) {
+    public String viewProfile(@AuthenticationPrincipal User user, @PathVariable String username, Model model) {
 
         Optional<User> user_optional = userService.findByUsername(username);
-
         if (user_optional.isPresent()) {
             model.addAttribute("user", user_optional.get());
-            return "profile";
+            if(user.getUsername().equals(user_optional.get().getUsername())) {
+                return "profile";
+            }
+            else {
+                return "profile2";
+            }
         } else {
             model.addAttribute("error", "User not found");
             return "error/error";
