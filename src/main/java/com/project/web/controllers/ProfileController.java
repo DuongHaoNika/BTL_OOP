@@ -39,6 +39,7 @@ public class ProfileController {
         Optional<User> user_optional = userService.findByUsername(username);
         if (user_optional.isPresent()) {
             model.addAttribute("user", user_optional.get());
+            model.addAttribute("username", user.getUsername());
             if(user.getUsername().equals(user_optional.get().getUsername())) {
                 return "profile";
             }

@@ -100,10 +100,16 @@ public class PostController {
     }
 
     @PutMapping("/comment/edit/{id}")
-    public String updateComment(@PathVariable Long id, @RequestParam String body, Model model) {
+    public String updateComment(@AuthenticationPrincipal User user, @PathVariable Long id, @RequestParam String body, Model model) {
         try {
-            Comment comment = commentService.updateComment(body, id);
-            return "redirect:/post/" + comment.getPost().getId();
+            Comment comment = commentService.getComment(id).orElse(null);
+            if(comment != null && comment.getUser().getUsername().equals(user.getUsername())){
+                commentService.updateComment(body, id);
+                return "redirect:/post/" + comment.getPost().getId();
+            }
+            else {
+                return "error/error";
+            }
         }
         catch(Exception e) {
             return "error/error";
