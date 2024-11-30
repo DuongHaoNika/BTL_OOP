@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @Service
@@ -23,8 +24,8 @@ public class ImageService implements IImageService {
         Image image = Image
                 .builder()
                 .source(url)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now().atZone(ZoneId.of("UTC+7")).toLocalDateTime())
+                .updatedAt(LocalDateTime.now().atZone(ZoneId.of("UTC+7")).toLocalDateTime())
                 .comment(comment)
                 .build();
         return imageRepository.save(image);

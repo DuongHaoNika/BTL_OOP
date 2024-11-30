@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -43,8 +44,8 @@ public class PostService implements IPostService {
                 .title(postDTO.getTitle())
                 .body(postDTO.getBody())
                 .active(true)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now().atZone(ZoneId.of("UTC+7")).toLocalDateTime())
+                .updatedAt(LocalDateTime.now().atZone(ZoneId.of("UTC+7")).toLocalDateTime())
                 .build();
         System.out.println(newPost);
         return postRepository.save(newPost);
@@ -56,7 +57,7 @@ public class PostService implements IPostService {
             post.setTitle(postDTO.getTitle());
             post.setBody(postDTO.getBody());
             post.setActive(postDTO.getActive());
-            post.setUpdatedAt(LocalDateTime.now());
+            post.setUpdatedAt(LocalDateTime.now().atZone(ZoneId.of("UTC+7")).toLocalDateTime());
             return postRepository.save(post);
         }
         else {

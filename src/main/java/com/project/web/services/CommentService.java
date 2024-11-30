@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,8 +40,8 @@ public class CommentService implements ICommentService {
                     .body(commentDTO.getBody())
                     .post(post)
                     .user(user)
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
+                    .createdAt(LocalDateTime.now().atZone(ZoneId.of("UTC+7")).toLocalDateTime())
+                    .updatedAt(LocalDateTime.now().atZone(ZoneId.of("UTC+7")).toLocalDateTime())
                     .build();
             return commentRepository.save(comment);
         }
@@ -65,7 +66,7 @@ public class CommentService implements ICommentService {
     public Comment updateComment(String body, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElse(null);
         if(comment != null) {
-            comment.setUpdatedAt(LocalDateTime.now());
+            comment.setUpdatedAt(LocalDateTime.now().atZone(ZoneId.of("UTC+7")).toLocalDateTime());
             comment.setBody(body);
             return commentRepository.save(comment);
         }
