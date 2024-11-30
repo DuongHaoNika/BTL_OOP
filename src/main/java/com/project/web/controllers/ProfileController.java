@@ -35,8 +35,13 @@ public class ProfileController {
 
     @GetMapping("/{username}")
     public String viewProfile(@AuthenticationPrincipal User user, @PathVariable String username, Model model) {
-
         Optional<User> user_optional = userService.findByUsername(username);
+        if(user == null) {
+            model.addAttribute("username", null);
+            model.addAttribute("user", user_optional.get());
+            return "profile2";
+        }
+
         if (user_optional.isPresent()) {
             model.addAttribute("user", user_optional.get());
             model.addAttribute("username", user.getUsername());
@@ -72,9 +77,16 @@ public class ProfileController {
         User existUser = userService.findByUsername(user.getUsername()).orElse(null);
         if(existUser != null) {
             try {
-                String urlImage = s3Service.uploadFile(file);
-                existUser.setAvatar(urlImage);
-                userService.save(existUser);
+                String contentType = file.getContentType();
+                assert contentType != null;
+                if(contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/jpg")) {
+                    String urlImage = s3Service.uploadFile(file);
+                    existUser.setAvatar(urlImage);
+                    userService.save(existUser);
+                }
+                else {
+                    throw new Exception("File is not an image!");
+                }
             }
             catch(Exception e) {
                 return null;

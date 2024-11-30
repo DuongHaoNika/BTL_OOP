@@ -70,7 +70,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Pair.of("/contact", "GET"),
                 Pair.of("/auth/logout", "GET"),
                 Pair.of("/post", "GET"),
-                Pair.of("/uploads", "GET")
+                Pair.of("/uploads", "GET"),
+                Pair.of("/profile", "GET")
         );
         for(Pair<String, String> token : bypassTokens){
             if(request.getServletPath().equals("/")) {
