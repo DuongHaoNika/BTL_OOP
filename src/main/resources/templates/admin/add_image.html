@@ -1,94 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Add Image</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-        }
-
-        form {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin: auto;
-            margin-bottom: 20px;
-        }
-
-        input[type="text"], input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        input[type="submit"] {
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-            width: 100%;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-        .articles {
-            max-width: 600px;
-            margin: auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .articles__heading {
-            margin: 0;
-            font-size: 24px;
-            color: #333;
-        }
-
-        .article-ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .article-ul li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .article-list__date {
-            color: #777;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
+    <link
+            rel="icon"
+            href="/img/title-icon.png"
+            type="image/x-icon"
+    />
+    <title th:text="${title}">Nika | Post</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container" style="margin-top: 100px">
     <form action="/admin/add-image" enctype="multipart/form-data" method="post">
         <input type="text" placeholder="Post Title" name="title" required>
-        <input type="file" class="form-control-file" name="uploaded_file" required>
+        <input type="file" class="form-control-file" name="uploaded_files" multiple required>
         <input type="submit" value="Add" class="btn">
     </form>
-    
+
     <section class="articles">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2 class="articles__heading">Image Name</h2>
@@ -109,5 +40,7 @@
             </li>
         </ul>
     </section>
+    <div th:replace="fragments/footer :: footer">&nbsp;</div>
+</div>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link
             rel="icon"
             href="/img/title-icon.png"
@@ -19,9 +19,9 @@
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2 class="articles__heading">Posts</h2>
                 <div class="search-container">
-                    <form action="/search">
+                    <form action="/search" method="get">
                         <img src="img/search-fn.png" class="search-icon" alt="Search Icon" style="height: 20px;">
-                        <input name="searchTerm" type="text" placeholder="Search">
+                        <input name="keyword" type="text" placeholder="Search">
                     </form>
                 </div>
             </div>
@@ -36,10 +36,31 @@
                 </ul>
             </div>
 
-            <a href="/?page=1" class="pagination">&lt; View Older Posts </a>
-            <a style="float:right" href="/?page=3" class="pagination">View Newer Posts &gt;</a>
+            <a th:if="${previousPage == true}" class="pagination" id="older-posts">&lt; View Older Posts </a>
+            <a th:if="${nextPage == true}" style="float:right" class="pagination" id="newer-posts">View Newer Posts &gt;</a>
         </section>
         <div th:replace="fragments/footer :: footer">&nbsp;</div>
     </div>
 </body>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentPage = parseInt(urlParams.get('page')) || 1;
+
+    const previousPage = currentPage + 1
+    const nextPage = currentPage - 1;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const olderPostsLink = document.getElementById('older-posts');
+        const newerPostsLink = document.getElementById('newer-posts');
+
+        if (olderPostsLink) {
+            olderPostsLink.href = `/?page=${previousPage}`;
+        }
+
+        if (newerPostsLink) {
+            newerPostsLink.href = `/?page=${nextPage}`;
+        }
+    });
+
+</script>
 </html>

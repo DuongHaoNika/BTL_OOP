@@ -42,8 +42,8 @@ p {
 input[type="text"],
 input[type="email"],
 input[type="password"],
-input[type="search"], 
-select, 
+input[type="search"],
+select,
 textarea {
     font-family: "Dosis", sans-serif;
     font-size: var(--font-size-base);
@@ -100,18 +100,18 @@ img {
     grid-template-rows: auto;
     padding: 10px 20px;
     border-bottom: 1px rgb(196, 190, 190) solid;
-    grid-template-areas: 
+    grid-template-areas:
     "logo button"
     "menu menu"
-    ;
+;
 }
 
 @media only screen and (min-width: 768px) {
     .header {
         grid-template-columns: auto 1fr auto;
-        grid-template-areas: 
+        grid-template-areas:
         "logo menu button"
-        ;
+    ;
     }
 }
 
@@ -177,7 +177,7 @@ img {
 .header__nav ul a.active {
     color: var(--gray);
 }
- 
+
 .header__button img {
     width: 20px;
     height: auto;
@@ -349,17 +349,17 @@ img {
     padding: 15px;
     cursor: pointer;
 }
-  
+
 .pagination {
-font-size: 1.3rem;
-color: var(--gray);
-text-decoration: none;
-margin-top: 40px;
-display: inline-block;
+    font-size: 1.3rem;
+    color: var(--gray);
+    text-decoration: none;
+    margin-top: 40px;
+    display: inline-block;
 }
 
 .pagination:hover {
-color: var(--black);
+    color: var(--black);
 }
 
 .admin-form {
@@ -399,16 +399,17 @@ color: var(--black);
 }
 
 .comment-div {
-    margin-bottom: 20px;
+    margin-top: 20px;
+    display: flex;
 }
 
 .time-comment {
-    margin: 0 0 0 12px;
+    margin: 0 0 0 60px;
     padding-top: 2px;
 }
 
 .comment-text {
-    
+
 }
 
 .comment-text button {
@@ -436,12 +437,12 @@ color: var(--black);
 .dropdown-content {
     display: none;
     position: absolute;
-    right: 0; 
+    right: 0;
     z-index: 2;
     background-color: #fff;
     min-width: 120px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    padding: 8px; 
+    padding: 8px;
     border-radius: 6px;
 }
 
@@ -518,3 +519,109 @@ color: var(--black);
     display: flex;
     justify-content: space-around;
 }
+
+
+
+
+
+
+
+
+
+/* Định nghĩa layout container */
+.profile-container {
+    margin-top: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Căn chỉnh các thành phần theo hàng dọc */
+    gap: 20px; /* Khoảng cách giữa ảnh và thông tin */
+    flex-wrap: wrap; /* Cho phép xuống dòng nếu không đủ không gian */
+}
+
+/* Căn chỉnh phần thông tin */
+.profile-details {
+    flex: 1 1 auto; /* Chiếm tối đa không gian còn lại */
+    min-width: 300px; /* Đảm bảo kích thước tối thiểu của phần thông tin */
+}
+
+/* Căn chỉnh phần ảnh */
+.profile-image {
+    flex: 0 0 auto; /* Kích thước cố định, không chiếm thêm không gian */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 400px; /* Đặt giới hạn kích thước */
+}
+
+/* Căn chỉnh ảnh */
+.profile-image img {
+    max-width: 100%; /* Đảm bảo ảnh không vượt quá kích thước container */
+    height: auto;
+    border-radius: 10px; /* Tạo viền bo tròn */
+}
+
+/* Media Query để đảm bảo responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Khi màn hình nhỏ, ảnh nằm dưới thông tin */
+        align-items: center; /* Căn giữa nội dung */
+    }
+
+    .profile-image {
+        max-width: 100%; /* Ảnh chiếm toàn bộ chiều rộng container */
+    }
+}
+
+.avatar-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+}
+
+.post-list {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown {
+    position: relative;
+    display: block;
+}
+
+.dropdown-toggle {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    padding: 5px 0;
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown.show .dropdown-menu {
+    display: block;
+}
+

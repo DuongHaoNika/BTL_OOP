@@ -1,11 +1,11 @@
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
     <header class="header" th:fragment="header">
-        <a href="/" class="header__logo">D22 ATTT</a>
+        <a href="/" class="header__logo">HaoDQ</a>
 
         <nav class="header__nav">
             <ul>
                 <li>
-                    <a href="/" class="active">Home</a>
+                    <a href="/">Home</a>
                 </li>
                 <li>
                     <a href="/about" class="">About</a>
@@ -17,20 +17,19 @@
         </nav>
 
         <div class="header__button">
-            <div class="dropdown" aria-expanded="false">
-                <a>DuongHaoNika
-                    <img src="/img/down.png" alt="">
+            <div th:if="${username != null}" class="dropdown" aria-expanded="false" >
+                <a th:text="${username}">
+                    <img style="width: 6px; height: 6px" src="/img/down.png" alt="">
                 </a>
                 <div class="dropdown-content">
-                    <a href="#">Profile</a>
-                    <a href="/logout">Logout</a>
+                    <a th:href="@{/profile}">Profile</a>
+                    <a href="/auth/logout">Logout</a>
                 </div>
             </div>
-            <!-- Nếu người dùng không đăng nhập -->
-            <!-- <a href="/auth?next=currentRoute" class="searchBtn" aria-expanded="false">
-                Login
-                <img src="/img/login.svg" alt="">
-            </a> -->
+
+            <div th:if="${username == null}">
+                <a href="/auth/login">Login</a>
+            </div>
         </div>
     </header>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link
             rel="icon"
             href="/img/title-icon.png"
@@ -17,37 +17,90 @@
 <div class="container">
     <div class="post-content">
         <h2 th:text="${post.title}">Title of the Post</h2>
-        <p th:text="${post.body}">This is the body of the post, where the content goes. It can be multiple paragraphs of text.</p>
+        <p th:utext="${post.body}">This is the body of the post, where the content goes. It can be multiple paragraphs of text.</p>
         <p th:text="${post.updatedAt}">October 15, 2023</p>
     </div>
 
-    <div class="comment-div">
-        <div class="comment">
-            <p class="user-comment">User1</p>
-            <p class="comment-content">This is a comment on the post.</p>
+    <div th:if="${comments != null}">
+        <div th:each="comment : ${comments}">
+            <div class="comment-div">
+                <div class="comment-avatar">
+                    <img th:src="${comment.userImage}" alt="avatar" class="avatar-img">
+                </div>
+                <div class="comment">
+                    <a th:href="@{/profile/{username}(username = ${comment.username})}" class="user-comment" th:text="${comment.fullname}"></a>
+                    <p class="comment-content" th:text="${comment.body}">comment.body</p>
+                    <img th:if="${comment.urlImage != null}" width="100%" th:src="${comment.urlImage}" alt="">
+                </div>
+                <div th:if="${username != null && username == comment.username}" class="dropdown" id="dropdown-comment">
+                    <button class="dropdown-toggle" onclick="toggleDropdown(this)">...</button>
+                    <div class="dropdown-menu">
+                        <a style="padding-right: 32px" class="dropdown-item" th:href="@{/comment/edit/{id}(id=${comment.id})}">Edit</a>
+                        <button class="dropdown-item" th:attr="onclick=|deleteComment('${comment.id}')|" >Delete</button>
+                    </div>
+                </div>
+            </div>
+            <p class="time-comment" th:text="${comment.updatedAt}"></p>
         </div>
-        <p class="time-comment">October 16, 2023</p>
     </div>
 
-    <div class="comment-div">
-        <div class="comment">
-            <p class="user-comment">User2</p>
-            <p class="comment-content">Another insightful comment here!</p>
-        </div>
-        <p class="time-comment">October 17, 2023</p>
-    </div>
 
-    <div class="comment-text">
-        <form action="/comment/post_id" method="post">
-            <p class="user-comment">Current User</p>
-            <textarea name="commentText" placeholder="Comment"></textarea>
+    <div th:if="${username != null}" class="comment-text">
+        <form th:action="@{/comment/{id}(id=${post.id})}" method="post" enctype="multipart/form-data">
+            <p th:text="${username}" class="user-comment">Current User</p>
+            <textarea name="body" placeholder="Comment"></textarea>
+            <input accept=".jpg,.jpeg,.png" type="file" class="form-control-file" name="uploaded_file">
             <button type="submit">Send</button>
         </form>
     </div>
 
-    <h3>Login to comment this blog!</h3>
+    <div th:if="${username == null}">
+        <h3>Login to comment this blog!</h3>
+    </div>
+
+
     <div th:replace="fragments/footer :: footer">&nbsp;</div>
 </div>
+
+<script>
+    const check = document.getElementById("dropdown-comment");
+    if(check) {
+        function toggleDropdown(button) {
+            const dropdown = button.closest('.dropdown');
+            dropdown.classList.toggle('show');
+            document.querySelectorAll('.dropdown').forEach(d => {
+                if (d !== dropdown) {
+                    d.classList.remove('show');
+                }
+            });
+        }
+
+        function deleteComment(commentId) {
+            if (confirm("Bạn có chắc muốn xóa bình luận này?")) {
+                fetch(`/comment/${commentId}`, { method: 'DELETE' })
+                    .then(response => response.json()) // Parse JSON response
+                    .then(data => {
+                        if (data.redirectUrl) {
+                            window.location.href = data.redirectUrl;
+                        } else if (data.error) {
+                            console.error(data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+
+        document.addEventListener('click', function (event) {
+            const isDropdown = event.target.closest('.dropdown');
+            if (!isDropdown) {
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
+            }
+        });
+    }
+</script>
+
 </body>
 </html>
 

@@ -30,6 +30,4 @@ public class UserDTO {
     private String school;
 
     private Boolean sex;
-
-    private Boolean active;
 }

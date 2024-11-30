@@ -1,20 +1,18 @@
 package com.project.web.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "avatar")
+@Table(name = "image_blog")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Avatar {
+@Builder
+public class ImageBlog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,12 +21,12 @@ public class Avatar {
     private String source;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "post_id")
+    private Post post;
 
-    @Column(name="created_at", nullable = false)
+    @Column(name="created_at" ,nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name="updated_at", nullable = false)
+    @Column(name="updated_at" ,nullable = false)
     private LocalDateTime updatedAt;
 }

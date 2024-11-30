@@ -1,49 +1,20 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Bài Viết</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link tới file CSS của bạn -->
-   <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .admin-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .button, .btn, .btn-delete {
-            padding: 10px 15px;
-            text-decoration: none;
-            color: white;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-delete {
-            background-color: #dc3545; /* Màu đỏ cho nút xóa */
-        }
-        .admin-posts {
-            list-style: none;
-            padding: 0;
-        }
-        .admin-posts li {
-            padding: 15px;
-            border-bottom: 1px solid #ccc;
-        }
-        .admin-post-controls {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
+    <link
+            rel="icon"
+            href="/img/title-icon.png"
+            type="image/x-icon"
+    />
+    <title th:text="${title}">Nika | Post</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <a href="/admin">&larr; Back</a>
 
     <div class="admin-title">
         <h2>Posts</h2>
@@ -51,30 +22,46 @@
     </div>
 
     <ul class="admin-posts">
-        <li>
-            <a href="/post/1">
-                Example Post Title 1 &nearr;
-            </a>
-            <div class="admin-post-controls">
-                <a href="/edit-post/1" class="btn">Edit</a>
-                <form action="/delete-post/1?_method=DELETE" method="POST" style="display:inline;">
-                    <input type="submit" value="Delete" class="btn-delete btn">
-                </form>
-            </div>
-        </li>
-        <li>
-            <a href="/post/2">
-                Example Post Title 2 &nearr;
-            </a>
-            <div class="admin-post-controls">
-                <a href="/edit-post/2" class="btn">Edit</a>
-                <form action="/delete-post/2?_method=DELETE" method="POST" style="display:inline;">
-                    <input type="submit" value="Delete" class="btn-delete btn">
-                </form>
-            </div>
-        </li>
-        <!-- Thêm nhiều bài viết khác nếu cần -->
+        <div th:each="post: ${posts}">
+            <li class="post-list">
+                <a style="width: 25%" th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">
+                    &nearr;
+                </a>
+                <p th:text="${post.active}"></p>
+                <div class="admin-post-controls">
+                    <a th:href="@{/admin/edit-post/{id}(id=${post.id})}" class="btn">Edit</a>
+                    <form th:action="@{/admin/delete-post/{id}(id=${post.id})}" th:method="DELETE" style="display:inline;">
+                        <input type="submit" value="Delete" class="btn-delete btn">
+                    </form>
+                </div>
+            </li>
+        </div>
     </ul>
-
+    <a th:if="${previousPage == true}" class="pagination" id="older-posts">&lt; View Older Posts </a>
+    <a th:if="${nextPage == true}" style="float:right" class="pagination" id="newer-posts">View Newer Posts &gt;</a>
+    <div th:replace="fragments/footer :: footer">&nbsp;</div>
+</div>
 </body>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentPage = parseInt(urlParams.get('page')) || 1;
+
+    const previousPage = currentPage + 1
+    const nextPage = currentPage - 1;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const olderPostsLink = document.getElementById('older-posts');
+        const newerPostsLink = document.getElementById('newer-posts');
+
+        if (olderPostsLink) {
+            olderPostsLink.href = `/admin?page=${previousPage}`;
+        }
+
+        if (newerPostsLink) {
+            newerPostsLink.href = `/admin?page=${nextPage}`;
+        }
+    });
+
+</script>
 </html>
+
